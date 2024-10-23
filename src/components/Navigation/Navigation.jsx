@@ -4,7 +4,7 @@ import s from "./Navigation.module.css";
 const Navigation = () => {
   return (
     <nav>
-      <ul>
+      <ul className={s.wrapper}>
         <li>
           <NavLink to="/" end>
             Home
