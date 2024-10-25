@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./RegisterPage.module.css";
+import { Field, Form, Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../redux/auth/operations";
+import { useNavigate } from "react-router-dom";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const RegisterPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const initialValues = {
+    name: "",
+    email: "",
+    password: "",
+  };
+  const hendleSubmit = (values, options) => {
+    console.log(values);
+    dispatch(register(values));
+    options.resetForm();
+  };
+
+  useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn);
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
+
   return (
     <div className={s.hero}>
       <div className={s.heroContent}>
@@ -9,44 +35,52 @@ const RegisterPage = () => {
           <h1 className={s.titei}>Register now!</h1>
         </div>
         <div className={s.card}>
-          <form className={s.cardBody}>
-            <div className={s.formControl}>
-              <div className={s.label}>
-                <span className={s.labelText}>Email</span>
+          <Formik onSubmit={hendleSubmit} initialValues={initialValues}>
+            <Form className={s.cardBody}>
+              <div className={s.formControl}>
+                <div className={s.label}>
+                  <span className={s.labelText}>Name</span>
+                </div>
+
+                <Field
+                  name="name"
+                  type="text"
+                  placeholder="name"
+                  className={s.input}
+                  required
+                />
               </div>
-              <input
-                type="email"
-                placeholder="email"
-                className={s.input}
-                required
-              />
-            </div>
-            <div className={s.formControl}>
-              <div className={s.label}>
-                <span className={s.labelText}>Password</span>
+              <div className={s.formControl}>
+                <div className={s.label}>
+                  <span className={s.labelText}>Email</span>
+                </div>
+                <Field
+                  name="email"
+                  type="email"
+                  placeholder="email"
+                  className={s.input}
+                  required
+                />
               </div>
-              <input
-                type="password"
-                placeholder="password"
-                className={s.input}
-                required
-              />
-            </div>
-            <div className={s.formControl}>
-              <div className={s.label}>
-                <span className={s.labelText}>Confirm Password</span>
+              <div className={s.formControl}>
+                <div className={s.label}>
+                  <span className={s.labelText}>Password</span>
+                </div>
+                <Field
+                  name="password"
+                  type="password"
+                  placeholder="password"
+                  className={s.input}
+                  required
+                />
               </div>
-              <input
-                type="password"
-                placeholder="confirm password"
-                className={s.input}
-                required
-              />
-            </div>
-            <div className={s.formControl}>
-              <button className={s.btnPrimary}>Register</button>
-            </div>
-          </form>
+              <div className={s.formControl}>
+                <button type="submit" className={s.btnPrimary}>
+                  Register
+                </button>
+              </div>
+            </Form>
+          </Formik>
         </div>
       </div>
     </div>
