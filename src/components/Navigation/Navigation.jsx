@@ -2,7 +2,11 @@ import { NavLink } from "react-router-dom";
 import s from "./Navigation.module.css";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors";
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectisRefreshing,
+} from "../../redux/auth/selectors";
 import { logout } from "../../redux/auth/operations";
 
 const Navigation = () => {
@@ -14,9 +18,11 @@ const Navigation = () => {
     return clsx(s.link, isActive && s.active);
   };
 
-  return (
+  const isRefreshing = useSelector(selectisRefreshing);
+
+  return isRefreshing ? null : (
     <div className={s.wrapper}>
-      <h2>Welcom, {user.name}</h2>
+      {isLoggedIn && <h2>Welcom, {user.name}</h2>}
       <div className={s.wrapperLinks}>
         <NavLink className={buildLinkClass} to="/">
           Home
@@ -26,11 +32,11 @@ const Navigation = () => {
         </NavLink>
         {!isLoggedIn && (
           <>
-            <NavLink className={buildLinkClass} to="/register">
-              Register
-            </NavLink>
             <NavLink className={buildLinkClass} to="/login">
               Login
+            </NavLink>
+            <NavLink className={buildLinkClass} to="/register">
+              Register
             </NavLink>
           </>
         )}

@@ -22,7 +22,6 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    console.log("isLoggedIn:", isLoggedIn);
     if (isLoggedIn) {
       navigate("/");
     }

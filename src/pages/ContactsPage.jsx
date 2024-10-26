@@ -5,9 +5,13 @@ import ContactList from "../components/ContactList/ContactList";
 import SearchBox from "../components/SearchBox/SearchBox";
 import { fetchContacts } from "../redux/contacts/operations";
 import { selectLoading, selectError } from "../redux/contacts/selectors";
+import { refresh } from "../redux/auth/operations";
 
 const ContactsPage = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchContacts());
