@@ -8,6 +8,8 @@ import ContactsPage from "./pages/ContactsPage";
 import HomePage from "./pages/HomePage/HomePage";
 import { useDispatch } from "react-redux";
 import { refresh } from "./redux/auth/operations";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import RestrictedRoute from "./components/RestrictedRoute/RestrictedRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,9 +23,30 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="contacts" element={<ContactsPage />} />
+          <Route
+            path="register"
+            element={
+              <RestrictedRoute
+                component={<RegisterPage />}
+                redirectTo="/contacts"
+              />
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <RestrictedRoute
+                component={<LoginPage />}
+                redirectTo="/contacts"
+              />
+            }
+          />
+          <Route
+            path="contacts"
+            element={
+              <PrivateRoute component={<ContactsPage />} redirectTo="/login" />
+            }
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

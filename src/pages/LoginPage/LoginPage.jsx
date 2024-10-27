@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import s from "./LoginPage.module.css";
 import { Field, Form, Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../redux/auth/operations";
-import { useNavigate } from "react-router-dom";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const initialValues = {
     email: "",
@@ -20,12 +16,6 @@ const LoginPage = () => {
     dispatch(login(values));
     options.resetForm();
   };
-  useEffect(() => {
-    console.log("isLoggedIn:", isLoggedIn);
-    if (isLoggedIn) {
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <div className={s.hero}>
@@ -59,11 +49,6 @@ const LoginPage = () => {
                   className={s.input}
                   required
                 />
-                <div className={s.label}>
-                  <a href="#" className={s.labelTextAlt}>
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className={s.formControl}>
                 <button type="submit" className={s.btn}>
